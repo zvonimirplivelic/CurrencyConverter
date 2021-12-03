@@ -1,6 +1,7 @@
 package com.zvonimirplivelic.currencyconverter.di
 
 import com.zvonimirplivelic.currencyconverter.CurrencyConverterApi
+import com.zvonimirplivelic.currencyconverter.CurrencyConverterApplication
 import com.zvonimirplivelic.currencyconverter.main.DefaultMainRepository
 import com.zvonimirplivelic.currencyconverter.main.MainRepository
 import com.zvonimirplivelic.currencyconverter.util.DispatcherProvider
@@ -8,6 +9,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.internal.managers.ApplicationComponentManager
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
@@ -17,7 +19,7 @@ import javax.inject.Singleton
 const val BASE_URL = "http://api.exchangeratesapi.io/"
 
 @Module
-@InstallIn(ApplicationComponentManager::class)
+@InstallIn(SingletonComponent::class)
 object AppModule {
 
     @Singleton

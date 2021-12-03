@@ -6,12 +6,15 @@ import androidx.lifecycle.viewModelScope
 import com.zvonimirplivelic.currencyconverter.data.models.Rates
 import com.zvonimirplivelic.currencyconverter.util.DispatcherProvider
 import com.zvonimirplivelic.currencyconverter.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.math.round
 
-class MainViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val repository: MainRepository,
     private val dispatchers: DispatcherProvider
 ) : ViewModel() {
