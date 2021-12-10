@@ -16,7 +16,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-const val BASE_URL = "http://api.exchangeratesapi.io/"
+const val BASE_URL = "https://api.exchangeratesapi.io/"
 
 @Module
 @InstallIn(SingletonComponent::class)

@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.zvonimirplivelic.currencyconverter.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -28,22 +29,24 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        lifecycleScope.launchWhenCreated {
-            when (val convertedData = viewModel.conversion.value) {
-                is MainViewModel.CurrencyEvent.Success -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.tvConversionResult.setTextColor(Color.BLACK)
-                    binding.tvConversionResult.text = convertedData.resultText
+        lifecycleScope.launchWhenStarted {
+            viewModel.conversion.collect { event ->
+                when (event) {
+                    is MainViewModel.CurrencyEvent.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.tvConversionResult.setTextColor(Color.BLACK)
+                        binding.tvConversionResult.text = event.resultText
+                    }
+                    is MainViewModel.CurrencyEvent.Failure -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.tvConversionResult.setTextColor(Color.RED)
+                        binding.tvConversionResult.text = event.errorText
+                    }
+                    is MainViewModel.CurrencyEvent.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                    else -> Unit
                 }
-                is MainViewModel.CurrencyEvent.Failure -> {
-                    binding.progressBar.visibility = View.GONE
-                    binding.tvConversionResult.setTextColor(Color.RED)
-                    binding.tvConversionResult.text = convertedData.errorText
-                }
-                is MainViewModel.CurrencyEvent.Loading -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                else -> Unit
             }
         }
     }

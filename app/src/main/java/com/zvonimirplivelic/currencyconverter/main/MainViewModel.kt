@@ -1,5 +1,6 @@
 package com.zvonimirplivelic.currencyconverter.main
 
+import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.round
 
+private const val TAG = "MVM"
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: MainRepository,
@@ -39,6 +41,7 @@ class MainViewModel @Inject constructor(
             _conversion.value = CurrencyEvent.Failure("Not a valid amount")
             return
         }
+
         viewModelScope.launch(dispatchers.io) {
             _conversion.value = CurrencyEvent.Loading
             when (val ratesResponse = repository.getRates(fromCurrency)) {
@@ -54,6 +57,7 @@ class MainViewModel @Inject constructor(
                         _conversion.value = CurrencyEvent.Success(
                             "$fromAmount $fromCurrency = $convertedCurrency $toCurrency"
                         )
+                        Log.d(TAG, "convert: $toCurrency")
                     }
                 }
             }
